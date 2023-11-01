@@ -1,4 +1,4 @@
-п»ї#include <iostream>
+#include <iostream>
 #include <string>
 #include "LRS.h"
 #include <cassert>
@@ -9,9 +9,9 @@ using namespace std;
 
 int main()
 {
-	//РїСЂРѕРІРµСЂРєР° СЂР°Р±РѕС‚РѕСЃРїРѕСЃРѕР±РЅРѕСЃС‚Рё
+	//проверка работоспособности
 	string name = "Ffehwuh";
-	LRS *B = new LRS[3]; //РјР°СЃСЃРёРІ РёР· РѕР±СЉРµРєС‚РѕРІ
+	LRS* B = new LRS[3]; //массив из объектов
 
 	{
 		LRS Test;
@@ -24,7 +24,7 @@ int main()
 		assert(Test.get_rad() == 0.0);
 		assert(Test.get_freq() == 0.0);
 	}
-	
+
 
 	B[1].set_name(name);
 	cout << B[0].get_name() << endl;
@@ -33,15 +33,15 @@ int main()
 	B[2].set_rad(3);
 	cout << B[2].get_rad() << endl;
 	for (int i = 0; i < 3; i++) { cout << B[i].get_rad() << endl << endl; }
-	LRS A; //РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
-	cout << A.to_string() << endl; //РІС‹РІРѕРґ РІСЃРµРіРѕ
-	A.set_desc(name); //РёР·РјРµРЅРµРЅРёСЏ РїРѕР»СЏ СЃ РёРЅС„РѕР№
-	cout << A.to_string() << endl; //РІС‹РІРѕРґ РІСЃРµРіРѕ
-	cout << A.get_desc() << endl; //РІС‹РІРѕРґ С‚РѕР»СЊРєРѕ РёРЅС„С‹
-	A.set_loc(2, 3); //Р·Р°РґР°РЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ СЃС‚Р°РЅС†РёРё РїСЂСЏРјС‹Рј СЃРїРѕСЃРѕР±РѕРј
-	cout << A.get_locs() << endl; //РІС‹РІРѕРґ РєРѕРѕСЂРґРёРЅР°С‚
+	LRS A; //инициализация
+	cout << A.to_string() << endl; //вывод всего
+	A.set_desc(name); //изменения поля с инфой
+	cout << A.to_string() << endl; //вывод всего
+	cout << A.get_desc() << endl; //вывод только инфы
+	A.set_loc(2, 3); //задание координат станции прямым способом
+	cout << A.get_locs() << endl; //вывод координат
 	cout << '\n';
-	A.switch_stat(); //РїРµСЂРµРєР»СЋС‡Р°С‚РµР»СЊ СЃС‚Р°С‚СѓСЃР° РІРµС‰Р°РЅРёСЏ
-	cout << A.to_string() << endl; //РІС‹РІРѕРґ РІСЃРµРіРѕ
-	
+	A.switch_stat(); //переключатель статуса вещания
+	cout << A.to_string() << endl; //вывод всего
+
 }

@@ -6,7 +6,7 @@
 using namespace std;
 
 ///класс региональной радиостанции
-class LRS 
+class LRS
 {
 private:
 	string sname = ""; //название

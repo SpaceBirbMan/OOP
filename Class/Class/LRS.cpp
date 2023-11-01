@@ -56,7 +56,7 @@ string LRS::to_string() const //вывести в строку всю информацию
 		+ std::to_string(scov_radius) + '\n'
 		+ std::to_string(slocation[0]) + ' ' + std::to_string(slocation[1]) + '\n';
 	return res;
-		
+
 }
 
 LRS:: ~LRS() {}
