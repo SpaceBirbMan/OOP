@@ -1,3 +1,4 @@
+//Auth: Sosnov K A CMC-22
 #include <iostream>
 #include <string>
 #include "LRS.h"
