@@ -20,24 +20,26 @@ public:
 	LRS(string nm = "Untitled", float freq = 0.0, float rad = 1.0, float* loc = nullptr); //конструктор
 
 	//сеттеры для параметров
-	void set_name(string& nm); //задать название
+	void set_name(const string& nm); //задать название
 	void set_freq(float fr); //задать частоту вещания
-	void set_desc(string& inf); //задать описание
+	void set_desc(const string& inf); //задать описание
 	void set_stat(bool s); //задать статус вещания
 	void set_rad(float r); //задать радиус покрытия
 	void set_loc(float* l); //косвенное задание координат (ссылкой на массив)
 	void set_loc(float x, float y);//прямое задание (координатами на плоскости)
 	//геттеры для параметров
-	string get_name() const; //получить название
+	string get_name() const; //получить название //const не меняет поля класса, вызывается для объекта константы
 	float get_freq() const; //получить частоту вещания
 	string get_desc() const; //получить описание
 	bool get_stat() const; //получить статус вещания
 	float get_rad() const; //получить радиус вещания
 	float* get_loc() const; //получить координаты массивом
 	string get_locs() const; //получить координаты строкой
-
-	void switch_stat(); //переключение статуса вещания
+	//переключение статуса вещания
+	void switch_stat(); 
 	string to_string() const; //вывести в строку всю информацию
 
 	~LRS(); //деструктор
 };
+//todo: комментарии наверх
+void string_to_file(string inp);

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "LRS.h"
+#include <fstream>
 
 using namespace std;
 
@@ -25,9 +26,9 @@ LRS::LRS(string nm, float freq, float rad, float* loc) //конструктор
 }
 
 //сеттеры для параметров
-void LRS::set_name(string& nm) { sname = nm; }
+void LRS::set_name(const string& nm)  { sname = nm; }
 void LRS::set_freq(float fr) { fr >= 0 ? sfrequency = fr : sfrequency; }
-void LRS::set_desc(string& inf) { sdescription = inf; }
+void LRS::set_desc(const string& inf) { sdescription = inf; }
 void LRS::set_stat(bool s) { sonline_status = s; }
 void LRS::set_rad(float r) { r >= 0 ? scov_radius = r : scov_radius; }
 void LRS::set_loc(float* l) { slocation = l; } //косвенное задание
@@ -64,3 +65,10 @@ string LRS::to_string() const //вывести в строку всю информацию
 
 LRS:: ~LRS() {}
 
+void string_to_file(string inp)
+{
+	ofstream fout;
+	fout.open("class_LRS_out.txt");
+	fout << inp;
+	fout.close();
+}
