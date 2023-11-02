@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 LRS::LRS(string nm, float freq, float rad, float* loc) //конструктор
 {
 	sname = nm;

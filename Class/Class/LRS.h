@@ -4,6 +4,7 @@
 
 
 using namespace std;
+
 ///класс региональной радиостанции
 class LRS
 {
