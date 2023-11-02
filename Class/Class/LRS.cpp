@@ -22,6 +22,7 @@ LRS::LRS(string nm, float freq, float rad, float* loc) //конструктор
 		slocation[1] = loc[1];
 	}
 }
+
 //сеттеры для параметров
 void LRS::set_name(string& nm) { sname = nm; }
 void LRS::set_freq(float fr) { fr >= 0 ? sfrequency = fr : sfrequency; }
@@ -30,6 +31,7 @@ void LRS::set_stat(bool s) { sonline_status = s; }
 void LRS::set_rad(float r) { r >= 0 ? scov_radius = r : scov_radius; }
 void LRS::set_loc(float* l) { slocation = l; } //косвенное задание
 void LRS::set_loc(float x, float y) { slocation[0] = x; slocation[1] = y; } //прямое задание
+
 //геттеры для параметров
 string LRS::get_name() const { return sname; }
 float LRS::get_freq() const { return sfrequency; }

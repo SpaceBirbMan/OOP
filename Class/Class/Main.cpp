@@ -25,7 +25,10 @@ int main()
 		assert(Test.get_freq() == 0.0);
 	}
 
-
+	LRS* G = new LRS;
+	float* Coords = new float[2] {0, 1};
+	G->set_loc(Coords);
+	cout << "G:" << G->get_locs() << endl;
 	B[1].set_name(name);
 	cout << B[0].get_name() << endl;
 	B[3].switch_stat();
