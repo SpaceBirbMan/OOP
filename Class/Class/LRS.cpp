@@ -63,12 +63,46 @@ string LRS::to_string() const //вывести в строку всю информацию
 
 }
 
-LRS:: ~LRS() {}
-
-void string_to_file(string inp)
+void LRS::in_class(const string& ins) //строка с данными в класс
 {
-	ofstream fout;
-	fout.open("class_LRS_out.txt");
-	fout << inp;
-	fout.close();
+	int cnt = 0, t = 0;
+	for (int i = 0; i < ins.size(); i++)
+		if (ins[i] == '\n') 
+		{ 
+			string temp = "";
+			cnt++; 
+			for (int k = t; k < i; k++)
+				temp = temp + ins[k];
+			switch (cnt)
+			{
+				case 1: { sname = temp; break; }
+				case 2: { sfrequency = stof(temp); break; }
+				case 3: { sdescription = temp; break; }
+				case 4: { temp == "Online" ? sonline_status = true : sonline_status = false; break; }
+				case 5: { scov_radius = stof(temp); break; }
+				case 6:
+						{
+							int j = 0;
+							while (ins[i] != ' ')
+								{
+									i--;
+									j++;
+								}
+							int js = i;
+							slocation[1] = stof(ins.substr(js,j));
+
+							j = 0;
+							while (ins[j] != '\n')
+								{
+									i--;
+									j++;
+								}
+							js = i;
+							slocation[0] = stof(ins.substr(js, j));
+						}
+			}
+			t = i+1;
+		}
 }
+
+LRS:: ~LRS() {} //деструктор
