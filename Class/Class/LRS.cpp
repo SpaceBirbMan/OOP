@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "LRS.h"
+#include <fstream>
 
 using namespace std;
 
@@ -25,9 +26,9 @@ LRS::LRS(string nm, float freq, float rad, float* loc) //конструктор
 }
 
 //сеттеры для параметров
-void LRS::set_name(string& nm) { sname = nm; }
+void LRS::set_name(const string& nm)  { sname = nm; }
 void LRS::set_freq(float fr) { fr >= 0 ? sfrequency = fr : sfrequency; }
-void LRS::set_desc(string& inf) { sdescription = inf; }
+void LRS::set_desc(const string& inf) { sdescription = inf; }
 void LRS::set_stat(bool s) { sonline_status = s; }
 void LRS::set_rad(float r) { r >= 0 ? scov_radius = r : scov_radius; }
 void LRS::set_loc(float* l) { slocation = l; } //косвенное задание
@@ -62,5 +63,46 @@ string LRS::to_string() const //вывести в строку всю информацию
 
 }
 
-LRS:: ~LRS() {}
+void LRS::in_class(const string& ins) //строка с данными в класс
+{
+	int cnt = 0, t = 0;
+	for (int i = 0; i < ins.size(); i++)
+		if (ins[i] == '\n') 
+		{ 
+			string temp = "";
+			cnt++; 
+			for (int k = t; k < i; k++)
+				temp = temp + ins[k];
+			switch (cnt)
+			{
+				case 1: { sname = temp; break; }
+				case 2: { sfrequency = stof(temp); break; }
+				case 3: { sdescription = temp; break; }
+				case 4: { temp == "Online" ? sonline_status = true : sonline_status = false; break; }
+				case 5: { scov_radius = stof(temp); break; }
+				case 6:
+						{
+							int j = 0;
+							while (ins[i] != ' ')
+								{
+									i--;
+									j++;
+								}
+							int js = i;
+							slocation[1] = stof(ins.substr(js,j));
 
+							j = 0;
+							while (ins[j] != '\n')
+								{
+									i--;
+									j++;
+								}
+							js = i;
+							slocation[0] = stof(ins.substr(js, j));
+						}
+			}
+			t = i+1;
+		}
+}
+
+LRS:: ~LRS() {} //деструктор

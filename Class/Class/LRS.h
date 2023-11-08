@@ -17,27 +17,47 @@ private:
 	float* slocation = new float[2]; //координаты станции
 
 public:
-	LRS(string nm = "Untitled", float freq = 0.0, float rad = 1.0, float* loc = nullptr); //конструктор
+	//конструктор
+	LRS(string nm = "Untitled", float freq = 0.0, float rad = 1.0, float* loc = nullptr); 
 
 	//сеттеры для параметров
-	void set_name(string& nm); //задать название
-	void set_freq(float fr); //задать частоту вещания
-	void set_desc(string& inf); //задать описание
-	void set_stat(bool s); //задать статус вещания
-	void set_rad(float r); //задать радиус покрытия
-	void set_loc(float* l); //косвенное задание координат (ссылкой на массив)
-	void set_loc(float x, float y);//прямое задание (координатами на плоскости)
+	//задать название
+	void set_name(const string& nm); 
+	//задать частоту вещания
+	void set_freq(float fr);
+	//задать описание
+	void set_desc(const string& inf); 
+	//задать статус вещания
+	void set_stat(bool s); 
+	//задать радиус покрытия
+	void set_rad(float r); 
+	//косвенное задание координат (ссылкой на массив)
+	void set_loc(float* l); 
+	//прямое задание (координатами на плоскости)
+	void set_loc(float x, float y);
 	//геттеры для параметров
-	string get_name() const; //получить название
-	float get_freq() const; //получить частоту вещания
-	string get_desc() const; //получить описание
-	bool get_stat() const; //получить статус вещания
-	float get_rad() const; //получить радиус вещания
-	float* get_loc() const; //получить координаты массивом
-	string get_locs() const; //получить координаты строкой
+	//получить название //const не меняет поля класса, вызывается для объекта константы
+	string get_name() const; 
+	//получить частоту вещания
+	float get_freq() const; 
+	//получить описание
+	string get_desc() const; 
+	//получить статус вещания
+	bool get_stat() const; 
+	//получить радиус вещания
+	float get_rad() const; 
+	//получить координаты массивом
+	float* get_loc() const; 
+	//получить координаты строкой
+	string get_locs() const; 
 
-	void switch_stat(); //переключение статуса вещания
-	string to_string() const; //вывести в строку всю информацию
+	//переключение статуса вещания
+	void switch_stat(); 
+	//вывести в строку всю информацию
+	string to_string() const; 
+	//строка в класс
+	void in_class(const string& ins); 
 
-	~LRS(); //деструктор
+	//деструктор
+	~LRS(); 
 };
