@@ -3,12 +3,15 @@
 #include "LRS.h"
 #include <cassert>
 #include <fstream>
+#include "C:\Users\kiril\OneDrive\Рабочий стол\FINAL_COUNTDOWN\FINAL_COUNTDOWN\matrx.h"
+
 
 using namespace std;
 
 
 int main()
 {
+
 	//проверка работоспособности
 	string name = "Ffehwuh";
 
@@ -70,27 +73,31 @@ int main()
 	cout << G->get_desc() << endl;
 	delete G;
 
-	LRS* D_Arr = new LRS[129]; //динамический массив с динамическими объектами
+	LRS* D_Arr = new LRS[129]; //динамический массив с динамическими объектами (сразу создаётся 129 объектов)
 
 	cout << endl;
-
-	for (int i = 0; i < 129; i++)
-	{
-		D_Arr[i] = *(new LRS);
-	}
 
 	for (int i = 0; i < 129; i++)
 	{
 		cout << D_Arr[i].get_stat() << endl;
-	}
-
-	/*for (int i = 0; i < 129; i++)
-	{
-		delete& D_Arr[i];
+		D_Arr[i].~LRS(); //деинициализация объекта
 	}
 	
 	cout << endl;
-	delete[] D_Arr;*/
+	
+	//массив из указателей на дин.объекты
+	LRS** DArr_DObj = new LRS*[129]; //это просто массив из указателей на тип
+
+	for (int i = 0; i < 129; i++)
+	{
+		DArr_DObj[i] = new LRS(); //соответственно надо вызывать конструкторы отдельно
+		DArr_DObj[i]->set_desc(to_string(i));
+		cout << "darr_dobj.lrs->" << DArr_DObj[i]->get_desc() << endl;
+		DArr_DObj[i]->~LRS(); //деинициализация объекта
+	}
+
+	delete[] D_Arr; //очищение памяти от массива
+	delete[] DArr_DObj; //очищение памяти от массива
 
 	LRS* B = new LRS[3]; //массив из объектов
 	B[1].set_name(name);
@@ -142,7 +149,6 @@ int main()
 		FC.in_class(fstr);
 	}
 
-	cout << "after: \n" << FC.to_string();
+	cout << "after: \n" << FC.to_string(); 
 }
 
-//Баг при запуске: полноценное выполнение носит случайный характер. Чаще всего ошибка ссылается на new_scalar.cpp
