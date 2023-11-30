@@ -4,7 +4,12 @@
 
 //auth: Sosnov.K
 
+// Представленные в программе вещи и результат её работы не имеют отношения к реальному миру
 
+////////////////////////////////////// И С П О Л Ь З У Е М Ы Е  Д А Н Н Ы Е //////////////////////////////////////
+
+
+/// Конструкционный стандарт для транспорта и всех его компонентов
 struct construction_standart
 {
 	enum part_vech_standart_corp
@@ -41,14 +46,32 @@ struct construction_standart
 		P, //спортивный транспорт
 		no_exs //техника не имеет специального определения
 	};
+
+	enum standart_vech_form_factor
+	{
+		X, //микро
+		X4, //мини
+		T, //стандартный
+		B2, //большой
+		BS, //сверхбольшой
+		NN, //нет точного определения
+	};
 	
-	//номера стандарта нет
 };
 
+////////////////////////////////////// П С Е В Д О Н И М Ы //////////////////////////////////////
+
 using cs = construction_standart;
-using pvsc = cs::part_vech_standart_corp;
-using svt = cs::standart_vech_name;
-using svs = cs::standart_vech_spec;
+
+	using pvsc = cs::part_vech_standart_corp;
+	using svt = cs::standart_vech_name;
+	using svs = cs::standart_vech_spec;
+	using svff = cs::standart_vech_form_factor;
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////// П Р И К Л А Д Н Ы Е  К Л А С С Ы ////////////////////////////////////// 
 
 class factor
 {
@@ -89,7 +112,10 @@ public:
 	float  get_cost_fac() const { return _cost_fac; }
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////
 
+
+////////////////////////////////////// К Л А С С Ы  Д Е Т А Л Е Й //////////////////////////////////////
 
 class part
 {
@@ -98,9 +124,15 @@ protected:
 	float part_mass = 0;
 	float cost = 0;
 
-	//гет-сет
+	virtual float get_mass() { return part_mass; }
+	virtual float get_cost() { return cost; }
+	virtual pvsc get_part_standart() { return part_standart; }
 
-	part(pvsc prt_std, float ms, float cst)
+	virtual void set_part_standart(pvsc std) { part_standart = std; }
+	virtual void set_mass(float m) { part_mass = m; }
+	virtual void set_cost(float c) { cost = c; }
+
+	part (pvsc prt_std, float ms, float cst)
 		: part_standart(prt_std), part_mass(ms), cost(cst)
 	{
 		factor tk(prt_std);
@@ -110,62 +142,71 @@ protected:
 		part_mass *= k;
 		cost *= m;
 	}
+
+	part() {}
+
+	virtual std::string to_string() = 0;
 };
 
-class cabin : protected part
+class cabin : virtual protected part
 {
 public:
 
-	float ms = 500;
-	float cst = 1200;
-	cabin(pvsc prt_std): part(prt_std, ms, cst) {}
-	//форм-фактор
+	svff cab_fac = cs::NN;
+
+	cabin(pvsc prt_std) : part(prt_std, part_mass, cost) { set_mass(500); set_cost(1200); }
+
+	std::string to_string() override { return ""; }
+	cabin() { part_mass = 500; cost = 1200; }
+
 };
 
-class engine: protected part
+class engine: virtual protected part
 {
 public:
 
-	float ms = 800;
-	float cst = 1200;
-	engine(pvsc prt_std) : part(prt_std, ms, cst) {}
+	engine(pvsc prt_std) : part(prt_std, 800, 1200) { }
 	float speed_modif = 1; //надо установить зависимость с компанией и типом транспорта
 
+	engine() {}
 	//тип двигателя (прямая связь с типом транспорта)
 };
 
-class chassis : protected part
+class chassis : virtual protected part
 {
 public:
 
-	float ms = 2500;
-	float cst = 3100;
-	chassis(pvsc prt_std) : part(prt_std, ms, cst) {}
+	chassis(pvsc prt_std) : part(prt_std, 2500, 3100) {}
 
+
+	chassis() {}
 	//todo: тип шасси
 };
 
-class weapon : protected part
+class weapon : virtual protected part
 {
 public:
 
-	float ms = 400;
-	float cst = 2900;
-	weapon(pvsc prt_std) : part(prt_std, ms, cst) {}
+	weapon(pvsc prt_std) : part(prt_std, 400, 2900) {}
 
+	weapon() {}
 	//todo: раскрть оружие
 };
 
-class extra_modules : protected part
+class extra_modules : virtual protected part
 {
 public:
 
-	float ms = 700;
-	float cst = 350;
-	extra_modules(pvsc prt_std) : part(prt_std, ms, cst) {}
+	extra_modules(pvsc prt_std) : part(prt_std, 700, 350) {}
 
+	extra_modules() {}
 	//todo: раскрть расширения
 };
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////// К Л А С С  Т Р А Н С П О Р Т А //////////////////////////////////////
 
 class vechicle : public cabin, engine, chassis, weapon, extra_modules
 {
@@ -208,11 +249,16 @@ public:
 		vech_type = v_type;
 		vech_spec = v_spec;
 
+		factor K(corp);
 		/*vech_standart = convertCompToPvsc(corp);*/
-		vech_mass = cabin::ms + engine::ms + chassis::ms + weapon::ms + extra_modules::ms;
+		vech_mass = K.get_vech_mass_fac() * get_mass();
 		speed = engine::speed_modif * 200;
-		cost = standart_cost_factor * (cabin::cst + engine::cst + chassis::cst + weapon::cst + extra_modules::cst);
+		cost = standart_cost_factor * get_cost();
 	}
+
+	vechicle()
+	{}
+
 
 	//нужен детальный конструктор для создания сборной солянки
 	//нужен псевдоним
