@@ -399,10 +399,16 @@ protected:
 
 	part() {}
 
+	/// Запись данных в строку
 	virtual std::string to_string() = 0;
 
+	/// <summary>
+	///  Запись конкретных локальных данных в строку
+	/// </summary>
+	/// <returns></returns>
 	virtual std::string get_string() const = 0;
 
+	/// Получение данных стандарта строкой
 	virtual std::string get_std_string() const 
 	{
 		switch (part_standart)
@@ -417,13 +423,16 @@ protected:
 	}
 };
 
+///Класс кабины
 class cabin : virtual protected part
 {
 private:
-	scff cab_fac = cs::NN;
+	scff cab_fac = cs::NN; //форм-фактор кабины
 
+	///Задать модификатор скорости
 	void set_speed_mod(float sf) override { max_speed_mod = sf; }
 
+	///Получить данные о форм-факторе строкой
 	std::string get_string() const override
 	{
 		switch (cab_fac)
@@ -439,7 +448,7 @@ private:
 
 public:
 
-
+	///Конструктор
 	cabin(
 		pvsc corparation = cs::abs_std,
 		svt type = cs::no_name,
@@ -459,6 +468,10 @@ public:
 		set_cost(1200 * c); 
 	}
 
+	/// <summary>
+	/// Запись всех данных в строку
+	/// </summary>
+	/// <returns></returns>
 	std::string to_string() override 
 	{ 
 		float m = get_mass();
@@ -469,21 +482,33 @@ public:
 
 	cabin() {}
 
+	/// <summary>
+	/// Получить модификатор скорости
+	/// </summary>
 	float get_speed_mod() override { return max_speed_mod; }
+
+	/// <summary>
+	/// Получить массу
+	/// </summary>
 	float get_mass() override { return part::get_mass(); } 
+
+	///Получить стоимость
 	float get_cost() override { return part::get_cost(); }
 
 };
 
+///Класс двигателя
 class engine: virtual protected part
 {
 private:
 
-	cs::engine_type et;
+	cs::engine_type et; //тип двигателя (костыль)
 
+
+	///Задать модификатор скорости
 	void set_speed_mod(float sf) override
 	{ 
-		switch (et) //дорасчёт множителя скорости
+		switch (et) //дорасчёт множителя скорости бредовым способом
 		{
 		case cs::R_1: { sf *= 1.2; break; }
 		case cs::R_5: { sf *= 2.8; break; }
@@ -498,6 +523,9 @@ private:
 		max_speed_mod *= sf;
 	}
 
+	/// <summary>
+	/// Получить данные типа двигателя
+	/// </summary>
 	std::string get_string() const override
 	{
 		switch (et)
@@ -515,6 +543,7 @@ private:
 
 public:
 
+	///Конструктор
 	engine(
 		cs::engine_type ET = cs::mus_or_else,
 		pvsc corparation = cs::abs_std,
@@ -539,6 +568,9 @@ public:
 
 	engine() {}
 
+	/// <summary>
+	/// Запись в строку
+	/// </summary>
 	std::string to_string() override
 	{
 		float m = get_mass();
@@ -547,18 +579,36 @@ public:
 		return std::to_string(m) + " " + std::to_string(c) + " " + std::to_string(get_speed_mod()) + " " + get_std_string() + " " + get_string();
 	}
 
+	/// <summary>
+	/// Получить модификатор скорости
+	/// </summary>
 	float get_speed_mod() override { return max_speed_mod; }
+
+	/// <summary>
+	/// Получить массу
+	/// </summary>
 	float get_mass() override { return part::get_mass(); }
+
+	/// <summary>
+	/// Получить стоимость
+	/// </summary>
 	float get_cost() override { return part::get_cost(); }
 
 };
 
+/// <summary>
+/// Класс шасси
+/// </summary>
 class chassis : virtual protected part
 {
 private:
 
-	cs::chas_type tp = cs::non;
+	cs::chas_type tp = cs::non; //тип шасси (костыль)
 	
+
+	/// <summary>
+	/// Задать модификатор скорости
+	/// </summary>
 	void set_speed_mod(float sf) override
 	{
 		switch (tp)
@@ -573,7 +623,8 @@ private:
 		max_speed_mod *= sf;
 	}
 
-	std::string get_string() const
+	///Получить тип шасси
+	std::string get_string() const override
 	{
 		switch (tp)
 		{
@@ -587,6 +638,7 @@ private:
 
 public:
 
+	///Конструктор
 	chassis(
 		cs::chas_type CT = cs::non,
 		pvsc corparation = cs::abs_std,
@@ -610,6 +662,7 @@ public:
 
 	chassis() {}
 
+	///Получить строку с данными
 	std::string to_string() override
 	{
 		float m = get_mass();
@@ -618,18 +671,21 @@ public:
 		return std::to_string(m) + " " + std::to_string(c) + " " + std::to_string(get_speed_mod()) + " " + get_std_string() + " " + get_string();
 	}
 
+	///Получить моддификатор скорости
 	float get_speed_mod() override { return max_speed_mod; }
 	float get_mass() override { return part::get_mass(); }
 	float get_cost() override { return part::get_cost(); }
 
 };
 
+///Класс оружия
 class weapon : virtual protected part
 {
 private:
 
 	wp twv = cs::non_arm;
 
+	///Получить тип оружия
 	std::string get_string() const
 	{
 		switch (twv)
@@ -735,7 +791,7 @@ public:
 
 class vechicle
 {
-protected:
+protected: //зачем?
 
 	pvsc vech_standart = cs::abs_std;
 	svt vech_type = cs::no_name;
@@ -748,7 +804,7 @@ protected:
 
 private:
 
-	float standart_cost_factor = 1.45;
+	float standart_cost_factor = 1.45; //перерасчётчик стоимости
 
 	cabin* CAB__;
 	engine* ENG__;
