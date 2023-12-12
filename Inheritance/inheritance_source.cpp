@@ -397,19 +397,23 @@ void vechicle::data_calc()
 	cost = standart_cost_factor * KP->get_cost_fac() * (CAB->get_cost() + ENG->get_cost() + CHA->get_cost() + WPN->get_cost() + XMD->get_cost());
 }
 
+#if TEST == false
 // Функция для применения цвета к строке (по приколу)
 std::string applyColor(const std::string& text, const std::string& color) {
 	return color + text + RESET;
 }
-
+#endif
 /// Выведение в строку длинного описания
 std::string vechicle::get_long_description()
 {
 	std::string temp = "";
 	std::string ext = "";
 
+#if TEST == false
 	ext = applyColor("_______Description_______", GREEN);
-	
+#else
+	ext = "_______Description_______";
+#endif
 
 	ext += "\n\n";
 	ext += "Mass: " + std::to_string(vech_mass) + "\n";
