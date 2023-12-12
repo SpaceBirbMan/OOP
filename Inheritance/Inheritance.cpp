@@ -1,8 +1,7 @@
-﻿#define TEST
-#include "header_array.h"
+﻿#include "header_array.h"
+#if TEST == false
 #include "inheritance_source.h"
 
-#ifndef TEST
 //auth: Sosnov.K
 
 int main()
